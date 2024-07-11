@@ -1,8 +1,11 @@
 package com.umut.user.converter;
 
+import com.umut.user.entity.Address;
 import com.umut.user.entity.Customer;
+import com.umut.user.model.AddressDto;
 import com.umut.user.model.CreateCustomerRequest;
 import com.umut.user.model.CustomerDto;
+import com.umut.user.model.UpdateCustomerRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -20,7 +23,6 @@ public class CustomerConverter {
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
-
     public CustomerDto convert(Customer customer) {
         return mapper.map(customer, CustomerDto.class);
     }

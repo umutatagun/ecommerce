@@ -2,8 +2,10 @@ package com.umut.user.controller;
 
 import com.umut.user.model.CreateCustomerRequest;
 import com.umut.user.model.CustomerDto;
+import com.umut.user.model.Status;
 import com.umut.user.model.UpdateCustomerRequest;
 import com.umut.user.service.CustomerService;
+import com.umut.user.specification.CustomerSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +18,8 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping
-    public List<CustomerDto> getCustomers() {
-        return customerService.getCustomers();
+    public List<CustomerDto> getCustomers(Status status, String name) {
+        return customerService.getCustomers(status, name);
     }
 
     @GetMapping("/{id}")
@@ -35,7 +37,7 @@ public class CustomerController {
         return customerService.updateCustomer(id, request);
     }
 
-    @DeleteMapping("{id}")
+    @PatchMapping("/delete/{id}")
     public void deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
     }

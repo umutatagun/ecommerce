@@ -3,7 +3,6 @@ package com.umut.user.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.catalina.User;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -22,4 +21,14 @@ public class Address extends BaseEntity {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

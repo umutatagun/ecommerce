@@ -4,12 +4,13 @@ import com.umut.user.converter.CustomerConverter;
 import com.umut.user.entity.Customer;
 import com.umut.user.model.CreateCustomerRequest;
 import com.umut.user.model.CustomerDto;
+import com.umut.user.model.Status;
 import com.umut.user.model.UpdateCustomerRequest;
 import com.umut.user.repository.CustomerRepository;
+import com.umut.user.specification.CustomerSpecification;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class CustomerService {
         this.mapper = mapper;
     }
 
-    public List<CustomerDto> getCustomers() {
-        List<Customer> customers = customerRepository.findAll();
+    public List<CustomerDto> getCustomers(Status status, String name) {
+        List<Customer> customers = customerRepository.findAll(CustomerSpecification.search(status, name));
 
         return converter.convert(customers);
     }
@@ -52,12 +53,19 @@ public class CustomerService {
 
     public CustomerDto updateCustomer(Long id, UpdateCustomerRequest request) {
         Customer customer = findById(id);
+        if (request.getAddress() != null) {
+            request.getAddress().setCustomer(customer);
+            customer.getAddresses().add(request.getAddress());
+        }
         mapper.map(request, customer);
+
         return converter.convert(customerRepository.save(customer));
     }
 
     public void deleteCustomer(Long id) {
-        customerRepository.delete(findById(id));
+        Customer customer = findById(id);
+        customer.setStatus(Status.PASSIVE);
+        customerRepository.save(customer);
     }
 
     private Customer findByEmail(String email) {

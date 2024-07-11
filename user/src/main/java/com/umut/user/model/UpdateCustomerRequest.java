@@ -1,5 +1,6 @@
 package com.umut.user.model;
 
+import com.umut.user.entity.Address;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -13,5 +14,5 @@ public class UpdateCustomerRequest{
         private String phoneNumber;
         private String password;
         private Status status;
-        private List<AddressDto> addresses;
+        private Address address;
 }
